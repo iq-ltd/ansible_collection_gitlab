@@ -1,0 +1,14 @@
+namespace: initq
+name: gitlab
+version: 1.0.0
+readme: README.md
+authors:
+  - Marvin Vogt <git@srv6d.space>
+description: "Deploy and manage GitLab CE/EE and GitLab runners."
+license:
+  - GPL-3.0-only
+tags: ["GitLab", "runner", "git", "ci", "devops", "automation", "system"]
+dependencies: {}
+repository: https://github.com/iq-ltd/ansible_collection_gitlab
+issues: https://github.com/iq-ltd/ansible_collection_gitlab/issues
+build_ignore: []
