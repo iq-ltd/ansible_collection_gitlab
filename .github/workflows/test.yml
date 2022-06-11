@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: ansible_collections/initq/gitlab
 
       - uses: actions/setup-python@v3
         with:
@@ -14,3 +16,4 @@ jobs:
       - run: pip3 install ansible
 
       - run: ansible-test sanity
+        working-directory: ansible_collections/initq/gitlab
