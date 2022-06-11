@@ -1,0 +1,19 @@
+---
+_gitlab_dependencies:
+  - curl
+  - openssh-server
+  - ca-certificates
+  - tzdata
+  - perl
+  - python3-pip
+_gitlab_pip_dependencies:
+  - pexpect
+_gitlab_apt_key_url: https://packages.gitlab.com/gitlab/gitlab-ee/gpgkey
+_gitlab_apt_repository_url: "{{ _gitlab_apt_repository[gitlab_edition] }}"
+_gitlab_apt_src_repository_url: "{{ _gitlab_apt_src_repository[gitlab_edition] }}"
+_gitlab_apt_repository:
+  enterprise: "deb https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu {{ ansible_distribution_release | lower }} main"
+  community: "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu {{ ansible_distribution_release | lower }} main"
+_gitlab_apt_src_repository:
+  enterprise: "deb-src https://packages.gitlab.com/gitlab/gitlab-ee/ubuntu {{ ansible_distribution_release | lower }} main"
+  community: "deb-src https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu {{ ansible_distribution_release | lower }} main"

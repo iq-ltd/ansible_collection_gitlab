@@ -1,0 +1,19 @@
+---
+- name: push gitlab configuration file
+  ansible.builtin.template:
+    src: "etc/gitlab/gitlab.rb.j2"
+    dest: "{{ _gitlab_configuration_file }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: gitlab-ctl reconfigure
+
+- name: write gitlab root user password to file
+  ansible.builtin.copy:
+    content: "{{ _gitlab_hashed_root_user_password }}"
+    dest: "{{ _gitlab_root_password_file }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: gitlab-rake root password reset
+  when: gitlab_root_user_password is defined

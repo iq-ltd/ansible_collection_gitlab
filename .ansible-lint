@@ -1,0 +1,7 @@
+---
+exclude_paths:
+  - .cache/
+  - .git/
+  - .venv/
+  - roles/runner/molecule/
+  - roles/gitlab/molecule/

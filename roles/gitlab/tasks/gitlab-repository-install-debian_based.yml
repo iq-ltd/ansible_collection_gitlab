@@ -1,0 +1,20 @@
+---
+- name: install GitLab apt key on debian based systems
+  ansible.builtin.apt_key:
+    url: "{{ _gitlab_apt_key_url }}"
+    id: "{{ _gitlab_apt_key_id | default(omit) }}"
+    state: present
+
+- name: add GitLab apt repository on debian based systems
+  ansible.builtin.apt_repository:
+    repo: "{{ _gitlab_apt_repository_url }}"
+    filename: "gitlab_{{ gitlab_edition }}"
+    mode: 0644
+    state: present
+
+- name: add GitLab apt-src repository on debian based systems
+  ansible.builtin.apt_repository:
+    repo: "{{ _gitlab_apt_src_repository_url }}"
+    filename: "gitlab-src_{{ gitlab_edition }}"
+    mode: 0644
+    state: present

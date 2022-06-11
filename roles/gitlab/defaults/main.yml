@@ -1,0 +1,8 @@
+---
+gitlab_letsencrypt_enable: false
+gitlab_disable_signup: false
+gitlab_root_user_blocked: false
+gitlab_registry_nginx_listen_port: 5050
+gitlab_registry_enable: true
+gitlab_smtp_enable: false
+gitlab_smtp_port: 465

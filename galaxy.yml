@@ -1,3 +1,4 @@
+---
 namespace: initq
 name: gitlab
 version: 1.0.0
@@ -8,7 +9,14 @@ description: "Deploy and manage GitLab CE/EE and GitLab runners."
 license:
   - GPL-3.0-only
 tags: ["GitLab", "runner", "git", "ci", "devops", "automation", "system"]
-dependencies: {}
+dependencies:
+  "ansible.utils": "*"
 repository: https://github.com/iq-ltd/ansible_collection_gitlab
 issues: https://github.com/iq-ltd/ansible_collection_gitlab/issues
-build_ignore: []
+build_ignore:
+  - .github
+  - .gitlab-ci.yml
+  - .ansible-lint
+  - .yamllint
+  - roles/gitlab/molecule
+  - roles/runner/molecule

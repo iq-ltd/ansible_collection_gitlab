@@ -1,0 +1,6 @@
+---
+- name: include gitlab role
+  ansible.builtin.include_role:
+    name: "{{ role_path }}/../gitlab"
+  vars:
+    gitlab_edition: "enterprise"

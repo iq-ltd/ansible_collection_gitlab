@@ -1,0 +1,8 @@
+---
+_gitlab_configuration_file: /etc/gitlab/gitlab.rb
+_gitlab_root_password_file: /etc/gitlab/current_root_password
+_gitlab_default_nginx_listen_addresses:
+  - "unix:/run/gitlab/nginx-http.sock"
+_gitlab_default_registry_nginx_listen_addresses:
+  - "unix:/run/gitlab/nginx-registry.sock"
+_gitlab_hashed_root_user_password: "{{ gitlab_root_user_password | string | password_hash('sha512', 65534 | random(seed=inventory_hostname) | string) }}"

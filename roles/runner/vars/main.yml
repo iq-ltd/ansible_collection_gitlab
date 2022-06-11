@@ -1,0 +1,39 @@
+---
+_gitlab_runner_repository_install_script: "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"
+_gitlab_runner_configuration_directory: /etc/gitlab-runner
+_gitlab_runner_configuration_file: "{{ _gitlab_runner_configuration_directory }}/config.toml"
+_gitlab_runner_configuration_hash_file: "{{ _gitlab_runner_configuration_directory }}/ansible_config_hash"
+_gitlab_runner_default_limit: "{{ ansible_processor_nproc }}"
+_gitlab_runner_registration_cmd: >
+  gitlab-runner register --non-interactive
+  --url="{{ gitlab_runner_ci_server_url }}"
+  --registration-token="{{ gitlab_runner_registration_token }}"
+  --run-untagged={{ gitlab_runner_run_untagged | lower }}
+  --limit={{ gitlab_runner_limit | default(_gitlab_runner_default_limit) }}
+  {% if gitlab_runner_tags is defined %}
+  --tag-list="{{ gitlab_runner_tags | join(',') }}"
+  {% endif %}
+  --executor="{{ gitlab_runner_executor }}"
+  --docker-image="{{ gitlab_runner_docker_image }}"
+  {% if gitlab_runner_docker_runtime is defined %}
+  --docker-runtime="{{ gitlab_runner_docker_runtime }}"
+  {% endif %}
+  --docker-privileged={{ gitlab_runner_docker_privileged | lower }}
+  {% for volume in gitlab_runner_docker_volumes | default(omit) if gitlab_runner_docker_volumes is defined %}
+  --docker-volumes="{{ volume }}"
+  {% endfor %}
+  --custom_build_dir-enabled={{ gitlab_runner_allow_custom_build_dir | lower }}
+_gitlab_runner_unregistration_command: "gitlab-runner unregister --name '{{ ansible_fqdn }}'"
+_gitlab_runner_config_state_hash_wanted: >
+  {{ (gitlab_runner_ci_server_url
+  + gitlab_runner_registration_token
+  + gitlab_runner_tags | default("NONE") | join() | string
+  + gitlab_runner_executor | default("NONE")
+  + gitlab_runner_run_untagged | string
+  + gitlab_runner_limit | string
+  + gitlab_runner_docker_image
+  + gitlab_runner_docker_privileged | string
+  + gitlab_runner_docker_runtime | default("NONE")
+  + gitlab_runner_allow_custom_build_dir | string)
+  | password_hash("sha256", "runner")
+  }}

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: "Include runner"
+      include_role:
+        name: "runner"
+  vars:
+    gitlab_runner_tags: ["runner", "test", "changed", "tags"]

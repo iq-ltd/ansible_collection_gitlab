@@ -1,0 +1,13 @@
+---
+- name: check if signup is enabled
+  ansible.builtin.shell:
+    cmd: >
+      echo 'select signup_enabled from application_settings' | gitlab-psql
+  register: _gitlab_signup_enabled
+  changed_when: false
+
+- name: disable signup
+  ansible.builtin.shell:
+    cmd: >
+      echo 'UPDATE application_settings SET signup_enabled = false' | gitlab-psql
+  when: _gitlab_signup_enabled.stdout_lines[2] | trim != "f"

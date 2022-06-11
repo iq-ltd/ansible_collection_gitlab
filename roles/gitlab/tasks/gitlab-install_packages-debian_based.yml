@@ -1,0 +1,25 @@
+---
+- name: install gitlab dependencies on debian based systems
+  ansible.builtin.apt:
+    name: "{{ _gitlab_dependencies }}"
+    update_cache: true
+    state: present
+
+- name: install gitlab pip dependencies for automated configuration
+  ansible.builtin.pip:
+    name: "{{ _gitlab_pip_dependencies }}"
+    state: present
+
+- name: install gitlab enterprise edition apt package on debian based systems
+  ansible.builtin.apt:
+    name: gitlab-ee
+    update_cache: true
+    state: present
+  when: gitlab_edition | lower == "enterprise"
+
+- name: install gitlab community edition apt package on debian based systems
+  ansible.builtin.apt:
+    name: gitlab-ce
+    update_cache: true
+    state: present
+  when: gitlab_edition | lower == "community"

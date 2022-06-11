@@ -1,0 +1,113 @@
+---
+argument_specs:
+  main:
+    options:
+      gitlab_edition:
+        type: "str"
+        required: true
+        description: "GitLab edition."
+        choices: ["enterprise", "community"]
+      gitlab_external_url:
+        type: "str"
+        required: true
+        description: "GitLab URL."
+      gitlab_disable_signup:
+        type: "bool"
+        required: false
+        default: false
+        description: "Disable user sign-up."
+      gitlab_root_user_password:
+        type: "str"
+        required: false
+        description: "GitLab root user password."
+      gitlab_root_user_blocked:
+        type: "bool"
+        required: false
+        default: false
+        description: "Block GitLab root user."
+      gitlab_letsencrypt_enable:
+        type: "bool"
+        required: false
+        default: false
+        description: "Manage certificates automatically using LetsEncrypt."
+      gitlab_nginx_listen_addresses:
+        type: "list"
+        elements: "str"
+        required: false
+        description: "Gitlab NGINX listen addresses. If none are defined only unix sockets will be created in '/run/gitlab'."
+      gitlab_nginx_ssl_certificate:
+        type: "str"
+        required: false
+        description: "Path to GitLab SSL certificate."
+      gitlab_nginx_ssl_certificate_key:
+        type: "str"
+        required: false
+        description: "Path to GitLab SSL private key."
+      gitlab_registry_enable:
+        type: "bool"
+        required: false
+        default: true
+        description: "Enable GitLab container registry site-wide."
+      gitlab_registry_external_url:
+        type: "str"
+        required: false
+        description: "Gitlab container registry URL."
+      gitlab_registry_nginx_listen_port:
+        type: "int"
+        required: false
+        description: "Gitlab registry NGINX listen port."
+      gitlab_registry_nginx_ssl_certificate:
+        type: "str"
+        required: false
+        description: "Path to GitLab registry SSL certificate."
+      gitlab_registry_nginx_ssl_certificate_key:
+        type: "str"
+        required: false
+        description: "Path to GitLab registry SSL private key."
+      gitlab_smtp_enable:
+        type: "bool"
+        required: false
+        default: false
+        description: "Enable GitLab SMTP."
+      gitlab_smtp_address:
+        type: "str"
+        required: false
+        description: "Gitlab SMTP server address."
+      gitlab_smtp_port:
+        type: "int"
+        required: false
+        default: 465
+        description: "Gitlab SMTP server port."
+      gitlab_smtp_user_name:
+        type: "str"
+        required: false
+        description: "Gitlab SMTP server user name."
+      gitlab_smtp_user_password:
+        type: "str"
+        required: false
+        description: "Gitlab SMTP server user password."
+      gitlab_smtp_domain:
+        type: "str"
+        required: false
+        description: "Gitlab SMTP domain."
+      gitlab_smtp_authentication:
+        type: "str"
+        required: false
+        description: "Gitlab SMTP authentication."
+        choices: ["login", "plain"]
+      gitlab_smtp_enable_starttls_auto:
+        type: "bool"
+        required: false
+        description: "Enable SMTP starttls."
+      gitlab_smtp_tls:
+        type: "bool"
+        required: false
+        description: "Enable SMTP TLS."
+      gitlab_email_from:
+        type: "str"
+        required: false
+        description: "Email address that will be used to send Email."
+      gitlab_email_display_name:
+        type: "str"
+        required: false
+        description: "Gitlab Email display name."

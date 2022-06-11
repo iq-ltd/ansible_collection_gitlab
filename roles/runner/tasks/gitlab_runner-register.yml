@@ -1,0 +1,40 @@
+---
+- name: stat configuration hash file
+  ansible.builtin.stat:
+    path: "{{ _gitlab_runner_configuration_hash_file }}"
+  register: _stat_configuration_hash_file
+
+- name: touch configuration hash file
+  ansible.builtin.file:
+    path: "{{ _gitlab_runner_configuration_hash_file }}"
+    state: touch
+  when: not _stat_configuration_hash_file.stat.exists
+
+- name: get current configuration hash
+  ansible.builtin.slurp:
+    src: "{{ _gitlab_runner_configuration_hash_file }}"
+  register: _slurp_configuration_hash
+
+- name: set current configuration hash
+  ansible.builtin.set_fact:
+    _gitlab_runner_config_state_hash_current: "{{ _slurp_configuration_hash['content'] | b64decode }}"
+
+- name: unregister GitLab runner
+  ansible.builtin.command:
+    cmd: "{{ _gitlab_runner_unregistration_command }}"
+  when:
+    - _gitlab_runner_config_state_hash_current != ""
+    - _gitlab_runner_config_state_hash_current != _gitlab_runner_config_state_hash_wanted
+
+- name: register GitLab runner
+  ansible.builtin.command:
+    cmd: "{{ _gitlab_runner_registration_cmd }}"
+  when: _gitlab_runner_config_state_hash_current != _gitlab_runner_config_state_hash_wanted
+
+- name: save GitLab runner configuration hash
+  ansible.builtin.copy:
+    content: "{{ _gitlab_runner_config_state_hash_wanted }}"
+    dest: "{{ _gitlab_runner_configuration_hash_file }}"
+    owner: root
+    group: root
+    mode: 0600

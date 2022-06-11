@@ -1,0 +1,13 @@
+---
+- name: check status of root user
+  ansible.builtin.shell:
+    cmd: >
+      gitlab-rails runner 'user = User.find(1); puts user.attributes["state"]'
+  register: _gitlab_root_user_status
+  changed_when: false
+
+- name: block root user
+  ansible.builtin.shell:
+    cmd: >
+      gitlab-rails runner 'User.find(1).block!'
+  when: _gitlab_root_user_status.stdout | trim != "blocked"

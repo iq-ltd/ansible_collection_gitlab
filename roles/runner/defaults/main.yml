@@ -1,0 +1,7 @@
+---
+gitlab_runner_executor: "docker"
+gitlab_runner_docker_image: "ubuntu:latest"
+gitlab_runner_run_untagged: false
+gitlab_runner_limit: "{{ ansible_processor_nproc }}"
+gitlab_runner_docker_privileged: false
+gitlab_runner_allow_custom_build_dir: true

@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: install basic dependencies in debian based conatainers
+      ansible.builtin.apt:
+        name:
+          - sudo
+          - iproute2
+          - procps
+          - curl
+        state: present
+      when: ansible_os_family == "Debian"
+    - name: "Include runner"
+      include_role:
+        name: "runner"

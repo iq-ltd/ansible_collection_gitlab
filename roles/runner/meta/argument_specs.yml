@@ -1,0 +1,51 @@
+---
+argument_specs:
+  main:
+    options:
+      gitlab_runner_ci_server_url:
+        type: "str"
+        required: true
+        description: "GitLab runner CI server URL."
+      gitlab_runner_registration_token:
+        type: "str"
+        required: true
+        description: "GitLab runner CI server registration token."
+      gitlab_runner_tags:
+        type: "list"
+        required: false
+        elements: "str"
+        description: "GitLab runner tags."
+      gitlab_runner_executor:
+        type: "str"
+        required: false
+        default: "docker"
+        description: "GitLab runner executor."
+      gitlab_runner_run_untagged:
+        type: "bool"
+        required: false
+        default: false
+        description: "Run untagged jobs."
+      gitlab_runner_limit:
+        type: "int"
+        required: false
+        default: "{{ ansible_processor_nproc }}"
+        description: "Maximum number of builds processed by the runner. Defaults to number of cores."
+      gitlab_runner_docker_image:
+        type: "str"
+        required: false
+        default: "ubuntu:latest"
+        description: "The default docker image to run jobs with."
+      gitlab_runner_docker_privileged:
+        type: "bool"
+        required: false
+        default: false
+        description: "Run job containers in privileged mode."
+      gitlab_runner_docker_runtime:
+        type: "str"
+        required: false
+        description: "The runtime for Docker containers."
+      gitlab_runner_allow_custom_build_dir:
+        type: "bool"
+        required: false
+        default: false
+        description: "Allow user to define a custom build directory for a job."

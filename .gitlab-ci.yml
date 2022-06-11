@@ -1,0 +1,57 @@
+---
+default:
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python
+
+stages:
+  - Lint
+  - Test
+
+variables:
+  DOCKER_HOST: "tcp://docker:2375"
+  PY_COLORS: 1
+  DOCKER_TLS_CERTDIR: ""
+
+yamllint-job:
+  stage: Lint
+  allow_failure: true
+  script:
+    - pip3 install yamllint
+    - yamllint .
+
+ansible-lint-job:
+  stage: Lint
+  allow_failure: true
+  script:
+    - pip3 install ansible-lint
+    - ansible-lint
+
+flake8-job:
+  stage: Lint
+  allow_failure: true
+  script:
+    - pip3 install flake8 flake8-black flake8-isort
+    - flake8 --max-line-length 160
+
+molecule-job:
+  stage: Test
+  services:
+    - docker:dind
+  needs: []
+  image: $CI_REGISTRY/docker_containers/molecule:latest
+  parallel:
+    matrix:
+      - ROLE_NAME: "gitlab"
+        GITLAB_EDITION: ["enterprise", "community"]
+        SCENARIO: ["default", "blocked_root_user"]
+      - ROLE_NAME: "runner"
+  script: cd roles/$ROLE_NAME && molecule test -s ${SCENARIO:-default}
+
+ansible-test-job:
+  stage: Test
+  services:
+    - docker:dind
+  needs: []
+  image: $CI_REGISTRY/docker_containers/molecule:latest
+  script: ansible-test sanity
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/ansible_collections/initq/$CI_PROJECT_NAME

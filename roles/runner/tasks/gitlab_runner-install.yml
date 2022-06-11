@@ -1,0 +1,26 @@
+---
+- name: fetch GitLab runner repository installation script
+  ansible.builtin.uri:
+    url: "{{ _gitlab_runner_repository_install_script }}"
+    return_content: true
+  register: _gitlab_deb_script
+
+- name: run GitLab runner repository installation script
+  ansible.builtin.shell:
+    cmd: cat - | bash
+    stdin: "{{ _gitlab_deb_script.content }}"
+    creates: /etc/apt/sources.list.d/runner_gitlab-runner.list
+
+- name: pin GitLab runner to GitLab repository
+  ansible.builtin.copy:
+    src: "etc/apt/preferences.d/pin-gitlab-runner.pref"
+    dest: /etc/apt/preferences.d/pin-gitlab-runner.pref
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install GitLab runner
+  ansible.builtin.apt:
+    name: gitlab-runner
+    update_cache: true
+    state: present
