@@ -5,6 +5,7 @@ default:
 stages:
   - Lint
   - Test
+  - Build
 
 variables:
   DOCKER_HOST: "tcp://docker:2375"
@@ -55,3 +56,14 @@ ansible-test-job:
   script: ansible-test sanity
   variables:
     GIT_CLONE_PATH: $CI_BUILDS_DIR/ansible_collections/initq/$CI_PROJECT_NAME
+
+ansible-galaxy-collection-build-job:
+  stage: Build
+  script:
+    - pip3 install ansible
+    - ansible-galaxy collection build
+  artifacts:
+    paths:
+      - "*.tar.gz"
+  rules:
+    - if: $CI_COMMIT_TAG
